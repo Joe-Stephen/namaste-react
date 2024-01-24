@@ -1,82 +1,41 @@
 import RestaurantCard from "./RestaurantCard";
 import resList from "../utils/mockData";
 import { useState, useEffect } from "react";
+import Shimmer from "./Shimmer";
 
 const Body = () => {
-  let newList = [
-    {
-      info:{
-    "id": "375041",
-    "name": "Andhra Gunpowder",
-    "cloudinaryImageId": "byilgyrcfz690ryoasww",
-    "locality": "6th Block",
-    "areaName": "Koramangala",
-    "costForTwo": "₹350 for two",
-    "cuisines": [
-      "Andhra",
-      "Biryani",
-      "South Indian"
-    ],
-    "avgRating": 3.8,
-    "avgRatingString": "4.4",
-    "sla": {
-      "deliveryTime": 21,
-    },
-  }},
-  {
-    info:{
-    "id": "375042",
-    "name": "KFC",
-    "cloudinaryImageId": "byilgyrcfz690ryoasww",
-    "locality": "6th Block",
-    "areaName": "Koramangala",
-    "costForTwo": "₹350 for two",
-    "cuisines": [
-      "Andhra",
-      "Biryani",
-      "South Indian"
-    ],
-    "avgRating": 4.0,
-    "avgRatingString": "4.4",
-    "sla": {
-      "deliveryTime": 21,
-    },
-  }},
-  {
-    info:{
-    "id": "375044",
-    "name": "MCD",
-    "cloudinaryImageId": "byilgyrcfz690ryoasww",
-    "locality": "6th Block",
-    "areaName": "Koramangala",
-    "costForTwo": "₹350 for two",
-    "cuisines": [
-      "Andhra",
-      "Biryani",
-      "South Indian"
-    ],
-    "avgRating": 4.5,
-    "avgRatingString": "4.4",
-    "sla": {
-      "deliveryTime": 21,
-    },
-  }},
-  ]
-  const [listOfRes, setListOfRes] = useState(newList);
 
-resList.filter((res)=>res.info.avgRating>4);
-console.log(newList);
-  const showTopRated = ()=>{
-    setListOfRes(resList.filter((res)=>res.info.avgRating>4.5))
+  const [listOfRes, setListOfRes] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [filteredRes, setFilteredRes] = useState([]);
+
+  useEffect(()=>{
+    fetchData();
+  },[])
+
+  const fetchData = async ()=>{
+   const data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING");
+
+   const json = await data.json();
+   setListOfRes(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
+   setFilteredRes(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
+   console.log("here==",filteredRes)
   }
-    return (
+
+    return listOfRes.length===0 ? <Shimmer />: (
       <div className="body">
         <div className="filter">
-            <button onClick={showTopRated} className="filter-btn">Top Rated Restaurants</button>
+          <input type="text" name="search" value={searchText} onChange={(e)=>setSearchText(e.target.value)}/>
+          <button onClick={()=>{
+  const filteredRestaurant = listOfRes.filter((res)=>res.info.name.toLowerCase().includes(searchText.toLowerCase()));
+  setFilteredRes(filteredRestaurant);
+}}>Search</button>
+
+            <button className="filter-btn" >Top Rated Restaurants</button>
         </div>
         <div className="res-container">
           {
-            listOfRes.map((res)=>{
+            filteredRes.map((res)=>{
               return <RestaurantCard key={res.info.id} resData={res}/>
             })
           }
