@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { LOGO_URL } from "../utils/constants";
 import { Link } from "react-router-dom";
+import useOnlineStatus from "../utils/useOnlineStatus";
 
 const Header = () => {
   const [loginButton, setLoginButton] = useState("Login");
@@ -30,6 +31,9 @@ const Header = () => {
             <Link to="/cart">Cart</Link>
           </li>
           <button onClick={() => toggleLoginStatus()}>{loginButton}</button>
+          <li className={useOnlineStatus() === false ? "offline" : "online"}>
+            {useOnlineStatus() === false ? "Offline" : "Online"}
+          </li>
         </ul>
       </div>
     </div>

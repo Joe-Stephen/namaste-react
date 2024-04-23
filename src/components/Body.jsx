@@ -7,21 +7,19 @@ import { RES_LIST_URL } from "../utils/constants";
 import useRestaurantList from "../utils/useRestaurantList";
 
 const Body = () => {
-  // const [filteredRes, setFilteredRes] = useState([]);
+  const [filteredRes, setFilteredRes] = useState([]);
   // const [listOfRes, setListOfRes] = useState([]);
+  // const [onlineStatus, setOnlineStatus] = useState(null);
   const [searchText, setSearchText] = useState("");
   const resList = useRestaurantList();
   const listOfRes = resList[0];
-  const filteredRes = resList[1];
-  // setListOfRes(resList[0]);
-  // setFilteredRes(resList[1]);
+  // const filteredRes = resList[1];
+  // setOnlineStatus(useOnlineStatus());
+  const onlineStatus = useOnlineStatus();
 
   useEffect(() => {
-    const listOfRes = resList[0];
-    const filteredRes = resList[1];
-  }, [listOfRes, filteredRes]);
-
-  const onlineStatus = useOnlineStatus();
+    setFilteredRes(resList[1]);
+  }, [onlineStatus, listOfRes, filteredRes]);
 
   if (!onlineStatus) {
     return (
