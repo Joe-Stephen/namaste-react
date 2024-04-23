@@ -28,11 +28,14 @@ const Header = () => {
             <Link to="/contact">Contact Us</Link>
           </li>
           <li>
+            <Link to="/grocery">Grocery</Link>
+          </li>
+          <li>
             <Link to="/cart">Cart</Link>
           </li>
           <button onClick={() => toggleLoginStatus()}>{loginButton}</button>
           <li className={useOnlineStatus() === false ? "offline" : "online"}>
-            {useOnlineStatus() === false ? "Offline" : "Online"}
+            {useOnlineStatus() === false ? "🔴Offline" : "🟢Online"}
           </li>
         </ul>
       </div>
