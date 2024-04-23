@@ -7,12 +7,23 @@ import { RES_LIST_URL } from "../utils/constants";
 import useRestaurantList from "../utils/useRestaurantList";
 
 const Body = () => {
+  // const [filteredRes, setFilteredRes] = useState([]);
+  // const [listOfRes, setListOfRes] = useState([]);
   const [searchText, setSearchText] = useState("");
   const resList = useRestaurantList();
   const listOfRes = resList[0];
   const filteredRes = resList[1];
+  // setListOfRes(resList[0]);
+  // setFilteredRes(resList[1]);
 
-  if (!useOnlineStatus) {
+  useEffect(() => {
+    const listOfRes = resList[0];
+    const filteredRes = resList[1];
+  }, [listOfRes, filteredRes]);
+
+  const onlineStatus = useOnlineStatus();
+
+  if (!onlineStatus) {
     return (
       <>
         <h1>You are offline! Please check your internet connection.</h1>
