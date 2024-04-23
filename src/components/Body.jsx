@@ -2,29 +2,23 @@ import RestaurantCard from "./RestaurantCard";
 import resList from "../utils/mockData";
 import { useState, useEffect } from "react";
 import Shimmer from "./Shimmer";
+import useOnlineStatus from "../utils/useOnlineStatus";
+import { RES_LIST_URL } from "../utils/constants";
+import useRestaurantList from "../utils/useRestaurantList";
 
 const Body = () => {
-  const [listOfRes, setListOfRes] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [filteredRes, setFilteredRes] = useState([]);
+  const resList = useRestaurantList();
+  const listOfRes = resList[0];
+  const filteredRes = resList[1];
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+  if (!useOnlineStatus) {
+    return (
+      <>
+        <h1>You are offline! Please check your internet connection.</h1>
+      </>
     );
-
-    const json = await data.json();
-    setListOfRes(
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
-    setFilteredRes(
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
-  };
+  }
 
   return listOfRes.length === 0 ? (
     <Shimmer />
