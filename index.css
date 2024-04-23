@@ -77,3 +77,16 @@ border: 1px solid black;
     margin: 10px;
     cursor: pointer;
 }
+
+/* about user card */
+
+
+.user-card{
+    padding: 10px;
+    border:1px solid black;
+    width: 280px;
+    height: 250px;
+    font-size: medium;
+    border-radius: 20px;
+    background-color: grey;    
+}
