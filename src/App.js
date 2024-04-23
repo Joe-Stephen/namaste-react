@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import "../index.css";
 import Header from "./components/Header";
 import Body from "./components/Body";
-import About from "./components/About";
 import ContactUs from "./components/ContactUs";
 import Cart from "./components/Cart";
 import ErrorComponent from "./components/ErrorComponent";
@@ -11,6 +10,7 @@ import ResMenu from "./components/RestaurantsMenu";
 // import Grocery from "";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 const Grocery = lazy(() => import("./components/Grocery"));
+const About = lazy(() => import("./components/About"));
 
 const AppLayout = () => {
   return (
@@ -32,7 +32,11 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/about",
-        element: <About />,
+        element: (
+          <Suspense fallback={<h1>Loading🐶🙉🐷</h1>}>
+            <About />
+          </Suspense>
+        ),
       },
       {
         path: "/contact",
@@ -41,7 +45,7 @@ const appRouter = createBrowserRouter([
       {
         path: "/grocery",
         element: (
-          <Suspense fallback={<h1>Loading🐶🙉🐷</h1>}>            
+          <Suspense fallback={<h1>Loading🐶🙉🐷</h1>}>
             <Grocery />
           </Suspense>
         ),
