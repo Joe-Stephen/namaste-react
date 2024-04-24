@@ -12,12 +12,12 @@ const Header = () => {
       : setLoginButton("Login");
   };
   return (
-    <div className="header">
+    <div className="flex justify-between">
       <div className="logo-container">
-        <img className="logo" src={LOGO_URL} alt="Spoon Feed logo" />
+        <img className="w-21" src={LOGO_URL} alt="Spoon Feed logo" />
       </div>
-      <div className="nav-items">
-        <ul className="list-items">
+      <div className="">
+        <ul className="flex p-4 m-5">
           <li>
             <Link to="/">Home</Link>
           </li>
