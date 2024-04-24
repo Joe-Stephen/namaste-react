@@ -1,16 +1,18 @@
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard, { WithPromotedLabel } from "./RestaurantCard";
 import resList from "../utils/mockData";
 import { useState, useEffect } from "react";
 import Shimmer from "./Shimmer";
 import useOnlineStatus from "../utils/useOnlineStatus";
 import { RES_LIST_URL } from "../utils/constants";
 import useRestaurantList from "../utils/useRestaurantList";
+import { Link } from "react-router-dom";
 
 const Body = () => {
   const [filteredRes, setFilteredRes] = useState([]);
   // const [listOfRes, setListOfRes] = useState([]);
   // const [onlineStatus, setOnlineStatus] = useState(null);
   const [searchText, setSearchText] = useState("");
+  const RestaurantCardPromoted = WithPromotedLabel(RestaurantCard);
   const resList = useRestaurantList();
   const listOfRes = resList[0];
   // const filteredRes = resList[1];
@@ -33,33 +35,48 @@ const Body = () => {
     <Shimmer />
   ) : (
     <div className="body">
-      <div className="filter">
-        <input
-          type="text"
-          name="search"
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-        />
-        <button
-          onClick={() => {
-            const filteredRestaurant = listOfRes.filter((res) =>
-              res.info.name.toLowerCase().includes(searchText.toLowerCase())
-            );
-            setFilteredRes(filteredRestaurant);
-          }}
-        >
-          Search
-        </button>
-
-        <button className="filter-btn">Top Rated Restaurants</button>
+      <div className="filter flex">
+        <div className="search p-4 m-4">
+          <input
+            type="text"
+            name="search"
+            className="border border-solid border-black"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+          <button
+            className="px-2 py-.5 bg-green-500 m-4 border border-solid border-black rounded-md"
+            onClick={() => {
+              const filteredRestaurant = listOfRes.filter((res) =>
+                res.info.name.toLowerCase().includes(searchText.toLowerCase())
+              );
+              setFilteredRes(filteredRestaurant);
+            }}
+          >
+            Search
+          </button>
+          <button className="px-2 py-.5 bg-yellow-500 m-4 border border-solid border-black rounded-md">
+            Top Rated Restaurants
+          </button>
+        </div>
       </div>
-      <div className="res-container">
-        {filteredRes.map((res) => {
-          return <RestaurantCard key={res.info.id} resData={res} />;
-        })}
+      <div className="flex flex-wrap">
+        {filteredRes.map((res) => (
+          <Link to={"/resMenu/" +res.info.id} key={res.info.id}>
+            {res.info.avgRating >= 4.4 ? (
+              <RestaurantCardPromoted resData={res} />
+            ) : (
+              <RestaurantCard resData={res} />
+            )}
+          </Link>
+        ))}
       </div>
     </div>
   );
 };
+
+{
+  /* <WithPromotedLabel resData={res} /> */
+}
 
 export default Body;
