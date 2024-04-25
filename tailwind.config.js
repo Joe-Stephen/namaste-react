@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'foodPlaceholder': "url('./Public/Images/Burger.avif')",
+      },
+    },
   },
   plugins: [],
 };
